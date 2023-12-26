@@ -1,0 +1,3 @@
+interface AnimeCardProps {
+  data: any
+}
