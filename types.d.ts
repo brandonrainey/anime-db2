@@ -1,3 +1,4 @@
 interface AnimeCardProps {
-  data: any
+  anime: any
+  index: number
 }

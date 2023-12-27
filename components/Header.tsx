@@ -12,7 +12,7 @@ export default function Header() {
           alt="jujustu kaisen hero image"
           width={720}
           height={1080}
-          layout="responsive"
+          style={{ width: '100%', height: 'auto'}}
           className="ml-auto max-w-[467px]"
         />
       </div>
