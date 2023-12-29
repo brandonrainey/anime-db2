@@ -14,11 +14,13 @@ export default function LoadMore() {
   const [ref, inView] = useInView()
   const [data, setData] = useState<AnimeCard[]>([])
 
+  const [selected, setSelected] = useState('Top')
+
   
 
   useEffect(() => {
     if (inView) {
-      fetchAnime(page).then((res) => {
+      fetchAnime(page, selected).then((res) => {
         setData([...data, ...res])
         page++
       })
@@ -31,7 +33,7 @@ export default function LoadMore() {
         {data}
       </div>
 
-      <section className="">
+      <section className="w-full flex items-center justify-center">
         <div ref={ref}>
           <Image
             src="/spinner.svg"
