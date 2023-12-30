@@ -1,7 +1,10 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import { MotionDiv } from './MotionDiv'
 import StarIcon from './StarIcon'
+import { useGlobalContext } from '../app/Context/store'
 
 const variants = {
   hidden: {
@@ -13,6 +16,9 @@ const variants = {
 }
 
 export default function AnimeCard({ anime, index }: AnimeCardProps) {
+
+  const { selected } = useGlobalContext()
+
   return (
     <MotionDiv
       className="flex flex-col items-center "
@@ -35,7 +41,7 @@ export default function AnimeCard({ anime, index }: AnimeCardProps) {
         />
       </a>
 
-      <h1 className="text-white font-semibold pt-2 text-center px-2">
+      <h1 className="text-white font-semibold pt-2 text-center px-2 text-wrap max-w-[260px]">
         {anime.title}
       </h1>
       <div className="flex items-center gap-2">

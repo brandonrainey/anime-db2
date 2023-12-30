@@ -1,12 +1,13 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
-import { fetchAnime } from '@/app/action'
+import { fetchAnime, fetchSeasonalAnime } from '@/app/action'
 import AnimeCard from './AnimeCard'
+import { useGlobalContext } from '../app/Context/store'
 
-let page = 2
+let page = 1
 
 export type AnimeCard = JSX.Element
 
@@ -14,18 +15,41 @@ export default function LoadMore() {
   const [ref, inView] = useInView()
   const [data, setData] = useState<AnimeCard[]>([])
 
-  const [selected, setSelected] = useState('Top')
+  const { selected } = useGlobalContext()
 
   
 
   useEffect(() => {
     if (inView) {
-      fetchAnime(page, selected).then((res) => {
+
+      selected === 'Top' ? fetchAnime(page, selected).then((res) => {
+        setData([...data, ...res])
+        page++
+      }) : fetchSeasonalAnime(page, selected).then((res) => {
         setData([...data, ...res])
         page++
       })
+      // fetchAnime(page, selected).then((res) => {
+      //   setData([...data, ...res])
+      //   page++
+      // })
+
     }
   }, [inView, data])
+
+  useEffect(() => {
+    setData([])
+    page = 1
+
+    selected === 'Top' ? fetchAnime(page, selected).then((res) => {
+      setData([...res])
+      
+    }) : fetchSeasonalAnime(page, selected).then((res) => {
+      setData([...res])
+      
+    })
+  }, [selected])
+
 
   return (
     <div className=''>
