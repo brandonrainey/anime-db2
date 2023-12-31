@@ -5,7 +5,6 @@ import { createContext, useContext, useState } from 'react'
 interface ContextProps {
     selected: string
     setSelected: React.Dispatch<React.SetStateAction<string>>
-
 }
 
 const GlobalContext = createContext<ContextProps>({

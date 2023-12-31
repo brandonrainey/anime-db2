@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
 
-      <body className="bg-slate-700 font-Poppins">
+      <body className="bg-slate-800 font-Poppins">
         <Providers>{children}</Providers>
       </body>
     </html>

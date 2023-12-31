@@ -1,6 +1,6 @@
 'use client'
 
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
 import { fetchAnime, fetchSeasonalAnime } from '@/app/action'
@@ -11,29 +11,32 @@ let page = 1
 
 export type AnimeCard = JSX.Element
 
-export default function LoadMore() {
+export default function LoadMore({
+  topAnime,
+  seasonalAnime,
+}: {
+  topAnime: AnimeCard[]
+  seasonalAnime: AnimeCard[]
+}) {
+
   const [ref, inView] = useInView()
+
   const [data, setData] = useState<AnimeCard[]>([])
 
   const { selected } = useGlobalContext()
 
-  
-
   useEffect(() => {
     if (inView) {
-
-      selected === 'Top' ? fetchAnime(page, selected).then((res) => {
-        setData([...data, ...res])
-        page++
-      }) : fetchSeasonalAnime(page, selected).then((res) => {
-        setData([...data, ...res])
-        page++
-      })
-      // fetchAnime(page, selected).then((res) => {
-      //   setData([...data, ...res])
-      //   page++
-      // })
-
+      page++
+      if (selected === 'Top') {
+        fetchAnime(page).then((res) => {
+          setData([...data, ...res])
+        })
+      } else if (page <= 8) {
+        fetchSeasonalAnime(page).then((res) => {
+          setData([...data, ...res])
+        })
+      }
     }
   }, [inView, data])
 
@@ -41,24 +44,25 @@ export default function LoadMore() {
     setData([])
     page = 1
 
-    selected === 'Top' ? fetchAnime(page, selected).then((res) => {
-      setData([...res])
-      
-    }) : fetchSeasonalAnime(page, selected).then((res) => {
-      setData([...res])
-      
-    })
+    if (selected === 'Top') {
+      setData([...topAnime])
+    } else {
+      setData([...seasonalAnime])
+    }
+
   }, [selected])
 
-
+  console.log(data)
   return (
-    <div className=''>
+    <div className="">
       <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 pt-10 w-auto max-w-[1400px]">
         {data}
       </div>
 
       <section className="w-full flex items-center justify-center">
-        <div ref={ref}>
+
+        
+          <div ref={ref} className={`${selected === 'Seasonal' && page > 8 && 'hidden'}`}>
           <Image
             src="/spinner.svg"
             alt="loading spinner"
@@ -66,6 +70,8 @@ export default function LoadMore() {
             height={70}
           />
         </div>
+       
+        
       </section>
     </div>
   )
