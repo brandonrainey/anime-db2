@@ -11,7 +11,7 @@ export default function Toggle() {
     }
 
   return (
-    <div className='mt-6'>
+    <div className=''>
       <select
         id="countries"
         onChange={checkDropdown}

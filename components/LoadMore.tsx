@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
-import { fetchAnime, fetchSeasonalAnime } from '@/app/action'
+import { fetchAnime, fetchSeasonalAnime, fetchSearchResults } from '@/app/action'
 import AnimeCard from './AnimeCard'
 import { useGlobalContext } from '../app/Context/store'
 
@@ -23,17 +23,40 @@ export default function LoadMore({
 
   const [data, setData] = useState<AnimeCard[]>([])
 
-  const { selected } = useGlobalContext()
+  const { selected, setSelected, query, searching, setSearching } = useGlobalContext()
+
+
+  useEffect(() => { 
+    console.log('search run')
+    setData([])
+    
+    page = 1
+
+    if (query.length > 0 && searching === true) {
+
+      fetchSearchResults(page, query).then((res) => {
+        setData([...res])
+      })
+
+      // setSelected('')
+    } 
+  }, [searching])
+
 
   useEffect(() => {
+    console.log('runs')
     if (inView) {
       page++
       if (selected === 'Top') {
         fetchAnime(page).then((res) => {
           setData([...data, ...res])
         })
-      } else if (page <= 8) {
+      } else if (selected === 'Seasonal' && page <= 8) {
         fetchSeasonalAnime(page).then((res) => {
+          setData([...data, ...res])
+        })
+      } else if (selected === 'Search') {
+        fetchSearchResults(page, query).then((res) => {
           setData([...data, ...res])
         })
       }
@@ -41,7 +64,11 @@ export default function LoadMore({
   }, [inView, data])
 
   useEffect(() => {
-    setData([])
+
+    if (selected !== 'Search') {
+
+setData([])
+    setSearching(false)
     page = 1
 
     if (selected === 'Top') {
@@ -49,10 +76,14 @@ export default function LoadMore({
     } else {
       setData([...seasonalAnime])
     }
+    }
+    
 
   }, [selected])
 
-  console.log(data)
+ 
+
+  console.log(selected)
   return (
     <div className="">
       <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 pt-10 w-auto max-w-[1400px]">

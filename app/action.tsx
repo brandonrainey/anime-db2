@@ -30,3 +30,25 @@ export const fetchSeasonalAnime = async (page: number) => {
     <AnimeCard anime={item} key={item.mal_id + index} index={index} />
   ))
 }
+
+export const fetchSearchResults = async (page: number, query: string) => {
+
+  
+
+  const response = await fetch(
+    `https://api.jikan.moe/v4/anime?q=${query}&order_by=popularity&sort=asc&limit=8&page=${page}&sfw`
+  )
+
+  
+
+  const data = await response.json()
+
+  if (!data.data) {
+    // Return an empty array if data.data is not defined
+    return [];
+  }
+
+  return data.data.map((item: any, index: number) => (
+    <AnimeCard anime={item} key={item.mal_id} index={index} />
+  ))
+}
