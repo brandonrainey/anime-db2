@@ -4,7 +4,6 @@ import React from 'react'
 import Image from 'next/image'
 import { MotionDiv } from './MotionDiv'
 import StarIcon from './StarIcon'
-import { useGlobalContext } from '../app/Context/store'
 
 const variants = {
   hidden: {
@@ -16,9 +15,6 @@ const variants = {
 }
 
 export default function AnimeCard({ anime, index }: AnimeCardProps) {
-
-  const { selected } = useGlobalContext()
-
   return (
     <MotionDiv
       className="flex flex-col items-center "

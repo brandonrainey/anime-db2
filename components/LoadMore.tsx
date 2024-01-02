@@ -3,7 +3,11 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
-import { fetchAnime, fetchSeasonalAnime, fetchSearchResults } from '@/app/action'
+import {
+  fetchAnime,
+  fetchSeasonalAnime,
+  fetchSearchResults,
+} from '@/app/action'
 import AnimeCard from './AnimeCard'
 import { useGlobalContext } from '../app/Context/store'
 
@@ -23,28 +27,23 @@ export default function LoadMore({
 
   const [data, setData] = useState<AnimeCard[]>([])
 
-  const { selected, setSelected, query, searching, setSearching } = useGlobalContext()
+  const { selected, setSelected, query, searching, setSearching, searchCheck } = useGlobalContext()
 
-
-  useEffect(() => { 
-    console.log('search run')
+  //used to fetch search results
+  useEffect(() => {
     setData([])
-    
+
     page = 1
 
     if (query.length > 0 && searching === true) {
-
       fetchSearchResults(page, query).then((res) => {
         setData([...res])
       })
+    }
+  }, [searchCheck])
 
-      // setSelected('')
-    } 
-  }, [searching])
-
-
+  //fetches data when loading element is in view(infinite scrolling)
   useEffect(() => {
-    console.log('runs')
     if (inView) {
       page++
       if (selected === 'Top') {
@@ -63,25 +62,20 @@ export default function LoadMore({
     }
   }, [inView, data])
 
+  //
   useEffect(() => {
-
     if (selected !== 'Search') {
+      setData([])
+      setSearching(false)
+      page = 1
 
-setData([])
-    setSearching(false)
-    page = 1
-
-    if (selected === 'Top') {
-      setData([...topAnime])
-    } else {
-      setData([...seasonalAnime])
+      if (selected === 'Top') {
+        setData([...topAnime])
+      } else if (selected === 'Seasonal') {
+        setData([...seasonalAnime])
+      }
     }
-    }
-    
-
   }, [selected])
-
- 
 
   console.log(selected)
   return (
@@ -91,9 +85,10 @@ setData([])
       </div>
 
       <section className="w-full flex items-center justify-center">
-
-        
-          <div ref={ref} className={`${selected === 'Seasonal' && page > 8 && 'hidden'}`}>
+        <div
+          ref={ref}
+          className={`${selected === 'Seasonal' && page > 8 && 'hidden'}`}
+        >
           <Image
             src="/spinner.svg"
             alt="loading spinner"
@@ -101,8 +96,6 @@ setData([])
             height={70}
           />
         </div>
-       
-        
       </section>
     </div>
   )
