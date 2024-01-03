@@ -22,12 +22,11 @@ export default function LoadMore({
   topAnime: AnimeCard[]
   seasonalAnime: AnimeCard[]
 }) {
-
   const [ref, inView] = useInView()
 
   const [data, setData] = useState<AnimeCard[]>([])
 
-  const { selected, setSelected, query, searching, setSearching, searchCheck } = useGlobalContext()
+  const { selected, query, searching, setSearching, searchCheck } = useGlobalContext()
 
   //used to fetch search results
   useEffect(() => {
@@ -64,20 +63,24 @@ export default function LoadMore({
 
   //
   useEffect(() => {
+
+
     if (selected !== 'Search') {
       setData([])
       setSearching(false)
       page = 1
 
       if (selected === 'Top') {
+        
         setData([...topAnime])
       } else if (selected === 'Seasonal') {
+        
         setData([...seasonalAnime])
       }
     }
   }, [selected])
 
-  console.log(selected)
+  
   return (
     <div className="">
       <div className="grid grid-flow-row lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 pt-10 w-auto max-w-[1400px]">

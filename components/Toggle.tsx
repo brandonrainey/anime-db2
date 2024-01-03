@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useGlobalContext } from '../app/Context/store'
 
 export default function Toggle() {
@@ -18,7 +18,7 @@ export default function Toggle() {
         value={selected}
         className="bg-gray-500  text-white text-md font-semibold rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
       >
-        {selected === 'Search' && query.length > 0 ? (
+        {selected === 'Search' ? (
           <option value="Search" className="">
             Searching Anime
           </option>

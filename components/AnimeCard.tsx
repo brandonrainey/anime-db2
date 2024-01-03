@@ -29,7 +29,7 @@ export default function AnimeCard({ anime, index }: AnimeCardProps) {
         className="w-[270px] md:w-[220px] h-[380px] md:h-[320px] relative "
       >
         <Image
-          src={anime.images.webp.image_url}
+          src={anime.images.jpg.image_url}
           alt={anime.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

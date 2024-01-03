@@ -1,21 +1,26 @@
 'use client'
 
-import React, { useState } from 'react'
-import { fetchSearchResults } from '@/app/action'
+import React from 'react'
 import { useGlobalContext } from '../app/Context/store'
 
 export default function SearchBar() {
+  const {
+    query,
+    setQuery,
+    setSearching,
+    setSelected,
+    searchCheck,
+    setSearchCheck,
+  } = useGlobalContext()
 
-    const { query, setQuery, searching, setSearching, selected, setSelected, searchCheck, setSearchCheck } = useGlobalContext()
+  
 
-    console.log(query)
-
-    function handleSearch(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        setSearching(true)
-        setSelected('Search')
-        setSearchCheck(!searchCheck)
-    }
+  function handleSearch(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setSearching(true)
+    setSelected('Search')
+    setSearchCheck(!searchCheck)
+  }
 
   return (
     <form className="flex items-center" onSubmit={handleSearch}>
@@ -23,7 +28,6 @@ export default function SearchBar() {
         Search
       </label>
       <div className="relative w-full">
-        
         <input
           type="text"
           id="simple-search"
@@ -31,7 +35,6 @@ export default function SearchBar() {
           placeholder="Search anime"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          
         />
       </div>
       <button

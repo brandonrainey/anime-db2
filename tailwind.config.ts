@@ -12,7 +12,8 @@ const config = {
   theme: {
     
     extend: {
-      fontFamily: { 'Poppins': ["Poppins", "sans-serif"] },
+      fontFamily: { 'Poppins': ["Poppins", "sans-serif"], 'PermanentMarker': ["Permanent Marker", "cursive"] },
+      
       
     },
   },
